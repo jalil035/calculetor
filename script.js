@@ -1,118 +1,118 @@
 
-
-let resultElement = document.getElementById("result");
-let clear = document.getElementById("clear");
-let delate = document.getElementById("delate");
-let divide = document.getElementById("divide");
-let multiply = document.getElementById("multiply");
-let minus = document.getElementById("minus");
-let sum = document.getElementById("sum");
-let decimal = document.getElementById("decimal");
-let equal = document.getElementById("equal");
+let resultBtn = document.getElementById("result");
+let clearBtn = document.getElementById("clear_btn");
+let delateBtn = document.getElementById("delate");
+let divideBtn = document.getElementById("divide");
+let multiplyBtn = document.getElementById("multiply");
+let minusBtn = document.getElementById("minus");
+let sumBtn = document.getElementById("sum");
+let decimalBtn = document.getElementById("decimal");
+let equalBtn = document.getElementById("equal");
 let numberBtn = document.querySelectorAll(".number");
 
+
 let result = '';
-let operator = '';
-let previousOperant = 0;
+let operation = '';
+let previousOperand = 0;
 
-//Function to Select Operator
+function appendNumber(number){
+    if(number === '.' && result.includes('.')){
+        return;
+    }
+    result += number;
+    updateDisplay()
+}
+
+//select operator 
 function selectOperator(operatorValue){
-    if(result === '0')  return;
+    if(result === '') return;
 
-    if(operator !== '0' && previousOperant !== '0'){
+    if(operation !== '' && previousOperand !== ''){
         calculateResult();
     }
 
-    operator = operatorValue;
-    previousOperant = result;
-    result = '';
+    operation = operatorValue;
+    previousOperand = result;
+    result = ''
     updateDisplay();
 }
-
-//Function to calculate Result
-function calculateResult (){
-    let evalutedResult;
-    let prev = parseFloat(previousOperant);
+//calculate Result
+function calculateResult(){
+    let evaluateResult;
+    let pre = parseFloat(previousOperand);
     let current = parseFloat(result);
 
-    if(isNaN(prev) || isNaN(current)) return;
+    if(isNaN(pre) || isNaN(current)) result;
 
-    switch (operator) {
+    switch (operation) {
         case '+':
-            evalutedResult = prev + current;
+            evaluateResult = pre + current;
             break;
-            case '-':
-                evalutedResult = prev - current;
-                break;
-            case '/':
-                evalutedResult = prev / current;
+        case '-':
+            evaluateResult = pre - current;
             break;
-            case '*':
-                evalutedResult = prev * current;
+        case '*':
+            evaluateResult = pre * current;
             break;
+        case '/':
+            evaluateResult = pre / current;
+            break;
+    
         default:
             return;
     }
-    result = evalutedResult.toString();
-    operator = '';
-    previousOperant = '';
-}
 
-//Function to append Number
-function appendNumber(number){
-    if(number === '.' && result.includes('.')) return;
-    if(result === '0'){
-        result = number;
-    }else{
-        result += number;
-    }
-    updateDisplay();
-}
-
-//Function to clear Display
-function clearBtn(){
-    result = '0';
-    previousOperant = '';
-    operator = '';
-    updateDisplay();
-}
-
-//Function to Delete last Digit
-function delateLastDigit(){
-    if(result.length === 1){
-        result = '0'
-    }else{
-        result = result.slice(0, -1);
-    }
-    updateDisplay();
+    result = evaluateResult.toString();
+    operation = '';
+    previousOperand = '';
 }
 
 function updateDisplay(){
-    if(operator){
-        resultElement.innerText = `${previousOperant} ${operator} ${result}`
+    if(operation){
+        resultBtn.innerText = `${previousOperand} ${operation} ${result}`
     }else{
-        resultElement.innerText= result;
+        resultBtn.innerHTML = result;
     }
 }
 
+function clearDisplay(){
+    result = '0';
+    previousOperand = '';
+    operation = '';
+    updateDisplay();
+}
 
-//add event Listener
+function delateLastDigit(){
+    if(result !== ''){
+        result = result.slice(0, -1)
+        if(result === '') result = '0';
+    }else if(operation !== ''){
+        operation = '';
+        result = previousOperand;
+        previousOperand = '';
+    }else if(previousOperand !== ''){
+        previousOperand = previousOperand.slice(0, -1)
+    };
+    updateDisplay();
+}
+
+//add even Listner 
 numberBtn.forEach(button =>{
     button.addEventListener('click', () =>{
-        appendNumber (button.innerText);
+        appendNumber(button.innerText);
     })
 })
 
-
-decimal.addEventListener('click', () => appendNumber('.'));
-sum.addEventListener('click', () => selectOperator('+'));
-minus.addEventListener('click', () => selectOperator('-'));
-multiply.addEventListener('click', () => selectOperator('*'));
-divide.addEventListener('click', () => selectOperator('/'));
-equal.addEventListener('click', () =>{
-    if(result === '') return;
+decimalBtn.addEventListener('click', () => appendNumber('.'));
+sumBtn.addEventListener('click', () => selectOperator('+'));
+minusBtn.addEventListener('click', () => selectOperator('-'));
+multiplyBtn.addEventListener('click', () => selectOperator('*'));
+divideBtn.addEventListener('click', () => selectOperator('/'));
+equalBtn.addEventListener('click', () =>{
+    if(result === '') result;
     calculateResult();
     updateDisplay();
-})
-clear.addEventListener('click', clearBtn);
-delate.addEventListener('click', delateLastDigit)
+});
+
+clearBtn.addEventListener('click', clearDisplay);
+delateBtn.addEventListener('click', delateLastDigit);
