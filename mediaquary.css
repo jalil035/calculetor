@@ -1,0 +1,14 @@
+@media screen and (max-width:1399px){}
+@media screen and (max-width:1199px){}
+@media screen and (max-width:991px){}
+@media screen and (max-width:768px){
+    html{
+        font-size: 50%;
+    }
+
+}
+@media screen and (max-width:576px){
+    html{
+        font-size: 35%;
+    }
+}
